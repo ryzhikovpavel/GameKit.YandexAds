@@ -59,7 +59,7 @@ namespace GameKit.YandexAds
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         private static void Registration()
         {
-            var config = Resources.Load<YandexNetwork>("AdMobConfig");
+            var config = Resources.Load<YandexNetwork>("YandexConfig");
             if (config != null && config.autoRegister && Application.isEditor == false)
             {
                 Service<AdsMediator>.Instance.RegisterNetwork(config);
