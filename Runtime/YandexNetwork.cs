@@ -89,10 +89,10 @@ namespace GameKit.YandexAds
             {
                 if (units is null) return TaskRoutine.FromCanceled();
 
-                if (units.interstitialUnits.Length > 0 && enableInterstitial)
+                if (units.interstitialUnits.Length > 0 && enableInterstitial && purchasedDisableUnits == false)
                     _units.Add(typeof(IInterstitialAdUnit), InitializeUnits<InterstitialUnit>(units.interstitialUnits));
 
-                if (units.bannerUnits.Length > 0)
+                if (units.bannerUnits.Length > 0 && purchasedDisableUnits == false)
                 {
                     if (enableBannersTopPosition)
                         _units.Add(typeof(ITopSmartBannerAdUnit), InitializeUnits<BannerUnit>(units.bannerUnits, AdPosition.TopCenter));

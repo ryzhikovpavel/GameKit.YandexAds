@@ -48,8 +48,8 @@ namespace GameKit.YandexAds
 
         public override bool Load(AdRequest request)
         {
-            Instance = new Banner(Key, _size, _position);
             if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is loading");
+            Instance = new Banner(Key, _size, _position);
             State = AdUnitState.Loading;
             Instance.LoadAd(request);
             Instance.Hide();
