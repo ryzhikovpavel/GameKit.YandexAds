@@ -211,7 +211,7 @@ namespace GameKit.YandexAds
         
         private AdRequest GetRequest()
         {
-            return new AdRequest.Builder().WithAge("6").Build();
+            return new AdRequest.Builder().Build();
         }
         
         private IEnumerator DownloadHandler(List<YandexUnit> units)
