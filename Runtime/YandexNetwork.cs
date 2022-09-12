@@ -59,6 +59,7 @@ namespace GameKit.YandexAds
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         private static void Registration()
         {
+            Logger<YandexNetwork>.Info("Registered");
             var config = Resources.Load<YandexNetwork>("YandexConfig");
             if (config != null && config.autoRegister && Application.isEditor == false)
             {
@@ -157,7 +158,7 @@ namespace GameKit.YandexAds
                 new BannerUnit(new AdUnitConfig() { name = "Test Top Banner 2", unitKey = bannerAdUnit }, AdPosition.TopCenter)
             });
             
-            _units.Add(typeof(ITopSmartBannerAdUnit), new IAdUnit[]{
+            _units.Add(typeof(IBottomSmartBannerAdUnit), new IAdUnit[]{
                 new BannerUnit(new AdUnitConfig() { name = "Test Bottom Banner 1", unitKey = bannerAdUnit }, AdPosition.BottomCenter),
                 new BannerUnit(new AdUnitConfig() { name = "Test Bottom Banner 2", unitKey = bannerAdUnit }, AdPosition.BottomCenter)
             });
