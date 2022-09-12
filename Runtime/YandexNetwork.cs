@@ -142,6 +142,16 @@ namespace GameKit.YandexAds
             string interstitialAdUnit = "unexpected_platform";
             string rewardedAdUnit = "unexpected_platform";
             
+            switch (Application.platform)
+            {
+                case RuntimePlatform.Android:
+                case RuntimePlatform.IPhonePlayer:
+                    bannerAdUnit = "R-M-DEMO-320x50";
+                    interstitialAdUnit = "R-M-DEMO-interstitial";
+                    rewardedAdUnit = "R-M-DEMO-rewarded-client-side-rtb";
+                    break;
+            }
+            
             _units.Add(typeof(ITopSmartBannerAdUnit), new IAdUnit[]{
                 new BannerUnit(new AdUnitConfig() { name = "Test Top Banner 1", unitKey = bannerAdUnit }, AdPosition.TopCenter),
                 new BannerUnit(new AdUnitConfig() { name = "Test Top Banner 2", unitKey = bannerAdUnit }, AdPosition.TopCenter)
