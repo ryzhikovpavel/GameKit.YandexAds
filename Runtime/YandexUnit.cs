@@ -88,14 +88,14 @@ namespace GameKit.YandexAds
             Error = e.Message;
             State = AdUnitState.Error;
             PauseUntilTime = DateTime.Now.AddSeconds(YandexNetwork.PauseDelay);
-            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} load failed");
+            if (Logger.IsErrorAllowed) Logger.Error($"{Name} load failed with error: {Error}");
         }
         
         protected virtual void OnAdFailedToShow(object sender, AdFailureEventArgs e)
         {
             Error = e.Message;
             State = AdUnitState.Error;
-            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is show failed");
+            if (Logger.IsErrorAllowed) Logger.Error($"{Name} is show failed with error {Error}");
         }
 
         protected YandexUnit(AdUnitConfig config) : base(config) { }

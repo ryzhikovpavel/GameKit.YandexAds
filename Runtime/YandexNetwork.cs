@@ -85,7 +85,7 @@ namespace GameKit.YandexAds
             {
                 case RuntimePlatform.Android: units = android; break;
                 case RuntimePlatform.IPhonePlayer: units = iOS; break;
-                default: units = null; break;
+                default: units = null; testMode = true; break;
             }
             
             if (testMode)
