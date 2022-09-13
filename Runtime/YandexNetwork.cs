@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GameKit.Ads;
 using GameKit.Ads.Networks;
 using GameKit.Ads.Units;
@@ -79,17 +80,16 @@ namespace GameKit.YandexAds
             MobileAds.SetLocationConsent(false);
             MobileAds.SetUserConsent(trackingConsent);
 
-#if UNITY_ANDROID
-            PlatformConfig units = android;
-#elif UNITY_IOS
-            PlatformConfig units = ios;
-#else
-            PlatformConfig units = null;
-#endif
+            PlatformConfig units;
+            switch (Application.platform)
+            {
+                case RuntimePlatform.Android: units = android; break;
+                case RuntimePlatform.IPhonePlayer: units = iOS; break;
+                default: units = null; break;
+            }
             
             if (testMode)
             {
-                if (Logger.IsErrorAllowed) Logger.Error("Units is null");
                 InitializeTestUnits();
             }
             else
@@ -117,7 +117,7 @@ namespace GameKit.YandexAds
 
             foreach (var banners in _units.Values)
             {
-                Loop.StartCoroutine(DownloadHandler(new List<YandexUnit>(banners.Cast<YandexUnit>())));
+                DownloadHandler(new List<YandexUnit>(banners.Cast<YandexUnit>()));
             }
             
             if (_units.TryGetValue(typeof(ITopSmartBannerAdUnit), out var bannerUnits))
@@ -229,21 +229,20 @@ namespace GameKit.YandexAds
             return new AdRequest.Builder().Build();
         }
         
-        private IEnumerator DownloadHandler(List<YandexUnit> units)
+        private async void DownloadHandler(List<YandexUnit> units)
         {
+            if (Logger.IsDebugAllowed) Logger.Debug("Start download handler");
             units.Sort((a,b)=>a.Config.priceFloor.CompareTo(b.Config.priceFloor));
             
             int attempt = 0;
 
             var request = GetRequest();
-            var delay = new WaitForSecondsRealtime(delayBetweenRequest);
+            //var delay = new WaitForSecondsRealtime(delayBetweenRequest);
 
             var last = units.Last();
             last.Load(request);
 
-            yield return null;
-
-            while (Loop.IsQuitting == false)
+            while (Application.isPlaying)
             {
                 var count = 0;
                 foreach (var u in units)
@@ -265,7 +264,7 @@ namespace GameKit.YandexAds
                     if (last == u) attempt++;
                 }
 
-                yield return delay;
+                await Task.Delay(delayBetweenRequest * 1000);
             }
         }
     }
