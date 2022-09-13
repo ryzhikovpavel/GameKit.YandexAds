@@ -153,27 +153,31 @@ namespace GameKit.YandexAds
                     break;
             }
             
-            _units.Add(typeof(ITopSmartBannerAdUnit), new IAdUnit[]{
-                new BannerUnit(new AdUnitConfig() { name = "Test Top Banner 1", unitKey = bannerAdUnit }, AdPosition.TopCenter),
-                new BannerUnit(new AdUnitConfig() { name = "Test Top Banner 2", unitKey = bannerAdUnit }, AdPosition.TopCenter)
-            });
+            if (enableBannersTopPosition)
+                _units.Add(typeof(ITopSmartBannerAdUnit), new IAdUnit[]{
+                    new BannerUnit(new AdUnitConfig() { name = "Test Top Banner 1", unitKey = bannerAdUnit }, AdPosition.TopCenter),
+                    new BannerUnit(new AdUnitConfig() { name = "Test Top Banner 2", unitKey = bannerAdUnit }, AdPosition.TopCenter)
+                });
             
-            _units.Add(typeof(IBottomSmartBannerAdUnit), new IAdUnit[]{
-                new BannerUnit(new AdUnitConfig() { name = "Test Bottom Banner 1", unitKey = bannerAdUnit }, AdPosition.BottomCenter),
-                new BannerUnit(new AdUnitConfig() { name = "Test Bottom Banner 2", unitKey = bannerAdUnit }, AdPosition.BottomCenter)
-            });
+            if (enableBannersBottomPosition)
+                _units.Add(typeof(IBottomSmartBannerAdUnit), new IAdUnit[]{
+                    new BannerUnit(new AdUnitConfig() { name = "Test Bottom Banner 1", unitKey = bannerAdUnit }, AdPosition.BottomCenter),
+                    new BannerUnit(new AdUnitConfig() { name = "Test Bottom Banner 2", unitKey = bannerAdUnit }, AdPosition.BottomCenter)
+                });
             
-            _units.Add(typeof(IInterstitialAdUnit), new IAdUnit[]{new InterstitialUnit(new AdUnitConfig()
-            {
-                name = "Test Interstitial",
-                unitKey = interstitialAdUnit
-            })});
+            if (enableInterstitial)
+                _units.Add(typeof(IInterstitialAdUnit), new IAdUnit[]{new InterstitialUnit(new AdUnitConfig()
+                {
+                    name = "Test Interstitial",
+                    unitKey = interstitialAdUnit
+                })});
             
-            _units.Add(typeof(IRewardedVideoAdUnit), new IAdUnit[]{new RewardedUnit(new AdUnitConfig()
-            {
-                name = "Test Rewarded",
-                unitKey = rewardedAdUnit
-            })});
+            if (enableRewarded)
+                _units.Add(typeof(IRewardedVideoAdUnit), new IAdUnit[]{new RewardedUnit(new AdUnitConfig()
+                {
+                    name = "Test Rewarded",
+                    unitKey = rewardedAdUnit
+                })});
         }
         
         private IAdUnit[] InitializeUnits<TUnit>(AdUnitConfig[] configs) where TUnit: YandexUnit
