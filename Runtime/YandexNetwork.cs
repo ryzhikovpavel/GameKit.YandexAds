@@ -120,13 +120,6 @@ namespace GameKit.YandexAds
                 DownloadHandler(new List<YandexUnit>(banners.Cast<YandexUnit>()));
             }
             
-            if (_units.TryGetValue(typeof(ITopSmartBannerAdUnit), out var bannerUnits))
-                // ReSharper disable once PossibleInvalidCastExceptionInForeachLoop
-                foreach (BannerUnit u in bannerUnits) u.EventClicked += StartPauseAfterClick;
-            if (_units.TryGetValue(typeof(IBottomSmartBannerAdUnit), out bannerUnits))
-                // ReSharper disable once PossibleInvalidCastExceptionInForeachLoop
-                foreach (BannerUnit u in bannerUnits) u.EventClicked += StartPauseAfterClick;
-            
             return TaskRoutine.FromCompleted();
         }
         
@@ -210,6 +203,7 @@ namespace GameKit.YandexAds
             {
                 if (string.IsNullOrEmpty(config.name)) config.name = typeof(TUnit).Name;
                 var unit = (TUnit)Activator.CreateInstance(typeof(TUnit), config, position);
+                unit.EventClicked += StartPauseAfterClick;
                 units.Add(unit);
             }
             
