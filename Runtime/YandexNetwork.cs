@@ -74,7 +74,7 @@ namespace GameKit.YandexAds
             }
         }
         
-        public TaskRoutine Initialize(bool trackingConsent, bool purchasedDisableUnits)
+        public TaskRoutine Initialize(bool trackingConsent, bool intrusiveAdUnits)
         {
             PauseDelay = pauseAfterFailedRequest;
             MobileAds.SetLocationConsent(false);
@@ -100,10 +100,10 @@ namespace GameKit.YandexAds
                     return TaskRoutine.FromCanceled();
                 }
 
-                if (units.interstitialUnits.Length > 0 && enableInterstitial && purchasedDisableUnits == false)
+                if (units.interstitialUnits.Length > 0 && enableInterstitial && intrusiveAdUnits)
                     _units.Add(typeof(IInterstitialAdUnit), InitializeUnits<InterstitialUnit>(units.interstitialUnits));
 
-                if (units.bannerUnits.Length > 0 && purchasedDisableUnits == false)
+                if (units.bannerUnits.Length > 0 && intrusiveAdUnits)
                 {
                     if (enableBannersTopPosition)
                         _units.Add(typeof(ITopSmartBannerAdUnit), InitializeUnits<BannerUnit>(units.bannerUnits, AdPosition.TopCenter));
