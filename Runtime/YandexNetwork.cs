@@ -14,6 +14,8 @@ namespace GameKit.YandexAds
     [CreateAssetMenu(fileName = "YandexConfig", menuName = "GameKit/Ads/Yandex")]
     public class YandexNetwork: ScriptableObject, IAdsNetwork
     {
+        private static ILogger Logger => Logger<YandexNetwork>.Instance;
+        
         internal static int PauseDelay;
 
         [SerializeField] 
@@ -43,7 +45,7 @@ namespace GameKit.YandexAds
         [SerializeField] 
         private bool enableRewarded = true;
         [SerializeField] 
-        private bool enableBannersTopPosition = false;
+        private bool enableBannersTopPosition;
         [SerializeField]
         private bool enableBannersBottomPosition = true;
 
@@ -59,12 +61,11 @@ namespace GameKit.YandexAds
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         private static void Registration()
         {
-            Logger<YandexNetwork>.Info("Registered");
             var config = Resources.Load<YandexNetwork>("YandexConfig");
             if (config != null && config.autoRegister && Application.isEditor == false)
             {
                 Service<AdsMediator>.Instance.RegisterNetwork(config);
-                Logger<YandexNetwork>.Info("Registered");
+                if (Logger.IsInfoAllowed) Logger.Info("Registered");
             }
         }
         
@@ -84,11 +85,16 @@ namespace GameKit.YandexAds
             
             if (testMode)
             {
+                if (Logger.IsErrorAllowed) Logger.Error("Units is null");
                 InitializeTestUnits();
             }
             else
             {
-                if (units is null) return TaskRoutine.FromCanceled();
+                if (units is null)
+                {
+                    if (Logger.IsErrorAllowed) Logger.Error("Units is null");
+                    return TaskRoutine.FromCanceled();
+                }
 
                 if (units.interstitialUnits.Length > 0 && enableInterstitial && purchasedDisableUnits == false)
                     _units.Add(typeof(IInterstitialAdUnit), InitializeUnits<InterstitialUnit>(units.interstitialUnits));
@@ -133,8 +139,8 @@ namespace GameKit.YandexAds
                 }
             }
             
-            if (_units.TryGetValue(typeof(ITopSmartBannerAdUnit), out var units)) AppendPause(units);
-            if (_units.TryGetValue(typeof(IBottomSmartBannerAdUnit), out units)) AppendPause(units);
+            if (_units.TryGetValue(typeof(ITopSmartBannerAdUnit), out var banners)) AppendPause(banners);
+            if (_units.TryGetValue(typeof(IBottomSmartBannerAdUnit), out banners)) AppendPause(banners);
         }
         
         private void InitializeTestUnits()

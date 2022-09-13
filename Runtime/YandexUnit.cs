@@ -8,6 +8,8 @@ namespace GameKit.YandexAds
     [Serializable]
     internal abstract class YandexUnit : IAdUnit
     {
+        protected static ILogger Logger => Logger<YandexNetwork>.Instance;
+        
         public readonly AdUnitConfig Config;
         public string Name => Config.name;
         public string Key => Config.unitKey;
@@ -22,13 +24,13 @@ namespace GameKit.YandexAds
 
         public virtual void Show()
         {
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is Displayed");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is show");
             State = AdUnitState.Displayed;
         }
 
         public virtual void Release()
         {
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is Released");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is release");
             State = AdUnitState.Empty;
         }
 
@@ -59,26 +61,26 @@ namespace GameKit.YandexAds
         protected virtual void OnAdClosed(object sender, EventArgs eventArgs)
         {
             State = AdUnitState.Closed;
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is closed");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is closed");
         }
 
         protected virtual void OnAdLoaded(object sender, EventArgs eventArgs)
         {
             State = AdUnitState.Loaded;
             Attempt = -1;
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is loaded");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is loaded");
         }
 
         protected virtual void OnAdClicked(object sender, EventArgs eventArgs)
         {
             State = AdUnitState.Clicked;
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is clicked");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is clicked");
         }
         
         protected virtual void OnAdDisplayed(object sender, EventArgs eventArgs)
         {
             State = AdUnitState.Displayed;
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is Displayed");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is displayed");
         }
         
         protected virtual void OnAdFailedToLoad(object sender, AdFailureEventArgs e)
@@ -86,14 +88,14 @@ namespace GameKit.YandexAds
             Error = e.Message;
             State = AdUnitState.Error;
             PauseUntilTime = DateTime.Now.AddSeconds(YandexNetwork.PauseDelay);
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} load failed");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} load failed");
         }
         
         protected virtual void OnAdFailedToShow(object sender, AdFailureEventArgs e)
         {
             Error = e.Message;
             State = AdUnitState.Error;
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is show failed");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is show failed");
         }
 
         protected YandexUnit(AdUnitConfig config) : base(config) { }

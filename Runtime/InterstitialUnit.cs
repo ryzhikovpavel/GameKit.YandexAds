@@ -35,7 +35,7 @@ namespace GameKit.YandexAds
         public override bool Load(AdRequest request)
         {
             Instance = new Interstitial(Key);
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is loading");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is loading");
             State = AdUnitState.Loading;
             Instance.LoadAd(request);
             return true;
@@ -43,7 +43,7 @@ namespace GameKit.YandexAds
         
         public override void Show()
         {
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is showing");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is showing");
             Instance.Show();
         }
 

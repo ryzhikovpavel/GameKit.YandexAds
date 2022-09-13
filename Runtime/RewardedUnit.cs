@@ -11,7 +11,7 @@ namespace GameKit.YandexAds
     {
         public override void Show()
         {
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is showing");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is showing");
             Instance.Show();
         }
 
@@ -27,7 +27,7 @@ namespace GameKit.YandexAds
 
         private void OnEarnedReward(object sender, Reward e)
         {
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is earned");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is earned");
             IsEarned = true;
             if (Reward is null) Reward = new DefaultRewardAdInfo(e.amount, e.type);
         }
@@ -48,7 +48,7 @@ namespace GameKit.YandexAds
         public override bool Load(AdRequest request)
         {
             Instance = new RewardedAd(Key);
-            if (Logger<YandexNetwork>.IsDebugAllowed) Logger<YandexNetwork>.Debug($"{Name} is loading");
+            if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is loading");
             State = AdUnitState.Loading;
             Instance.LoadAd(request);
             return true;
