@@ -51,6 +51,8 @@ namespace GameKit.YandexAds
         private bool enableBannersTopPosition;
         [SerializeField]
         private bool enableBannersBottomPosition = true;
+        [SerializeField] 
+        private bool useOnlyWithRussianLanguage;
 
         [Header("Platforms")]
         [SerializeField]
@@ -68,6 +70,16 @@ namespace GameKit.YandexAds
             if (config != null && config.autoRegister)
             {
                 if (Application.isEditor && config.initializeOnEditor == false) return;
+                if (config.useOnlyWithRussianLanguage)
+                    switch (Application.systemLanguage)
+                    {
+                        case SystemLanguage.Belarusian:
+                        case SystemLanguage.Russian:
+                        case SystemLanguage.Ukrainian:
+                            break;
+                        default:
+                            return;
+                    }
                     
                 Service<AdsMediator>.Instance.RegisterNetwork(config);
                 if (Logger.IsInfoAllowed) Logger.Info("Registered");
