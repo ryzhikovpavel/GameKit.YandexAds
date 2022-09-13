@@ -17,14 +17,14 @@ namespace GameKit.YandexAds
         public BannerUnit(AdUnitConfig config, AdPosition position) : base(config)
         {
             _position = position;
-            _size = AdSize.FlexibleSize(GetScreenWidthDp(), 100);
+            _size = AdSize.FlexibleSize(GetScreenWidthDp(), 50);
         }
 
         protected override void Initialize()
         {
             Instance.OnAdLoaded += OnAdLoaded;
+            Instance.OnAdLoaded += OnInternalLoaded;
             Instance.OnAdFailedToLoad += OnAdFailedToLoad;
-            Instance.OnImpression += OnImpression;
             Instance.OnAdClicked += OnAdClicked;
         }
 
@@ -39,6 +39,7 @@ namespace GameKit.YandexAds
             base.Release();
             if (Instance is null) return;
             Instance.OnAdLoaded -= OnAdLoaded;
+            Instance.OnAdLoaded += OnInternalLoaded;
             Instance.OnAdFailedToLoad -= OnAdFailedToLoad;
             Instance.OnImpression -= OnImpression;
             Instance.OnAdClicked -= OnAdClicked;
@@ -72,6 +73,12 @@ namespace GameKit.YandexAds
         {
             int screenWidth = (int)Screen.safeArea.width;
             return ScreenUtils.ConvertPixelsToDp(screenWidth);
+        }
+
+        private void OnInternalLoaded(object sender, EventArgs e)
+        {
+            Instance.Hide();
+            Instance.OnImpression += OnImpression;
         }
 
         private void OnImpression(object sender, ImpressionData e)
