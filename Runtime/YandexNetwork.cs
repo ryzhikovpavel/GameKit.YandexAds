@@ -40,6 +40,8 @@ namespace GameKit.YandexAds
         [Header("Extras")]
         [SerializeField]
         private bool testMode;
+        [SerializeField]
+        private bool initializeOnEditor;
         [SerializeField] 
         private bool enableInterstitial = true;
         [SerializeField] 
@@ -62,8 +64,10 @@ namespace GameKit.YandexAds
         private static void Registration()
         {
             var config = Resources.Load<YandexNetwork>("YandexConfig");
-            if (config != null && config.autoRegister && Application.isEditor == false)
+            if (config != null && config.autoRegister)
             {
+                if (Application.isEditor && config.initializeOnEditor == false) return;
+                    
                 Service<AdsMediator>.Instance.RegisterNetwork(config);
                 if (Logger.IsInfoAllowed) Logger.Info("Registered");
             }
