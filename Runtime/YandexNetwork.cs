@@ -93,7 +93,7 @@ namespace GameKit.YandexAds
             MobileAds.SetUserConsent(trackingConsent);
 
             PlatformConfig units;
-            switch (Application.platform)
+            switch (GetPlatform())
             {
                 case RuntimePlatform.Android: units = android; break;
                 case RuntimePlatform.IPhonePlayer: units = iOS; break;
@@ -158,7 +158,7 @@ namespace GameKit.YandexAds
             string interstitialAdUnit = "unexpected_platform";
             string rewardedAdUnit = "unexpected_platform";
             
-            switch (Application.platform)
+            switch (GetPlatform())
             {
                 case RuntimePlatform.Android:
                 case RuntimePlatform.IPhonePlayer:
@@ -238,7 +238,7 @@ namespace GameKit.YandexAds
         private async void DownloadHandler(List<YandexUnit> units)
         {
             if (Logger.IsDebugAllowed) Logger.Debug("Start download handler");
-            units.Sort((a,b)=>a.Config.priceFloor.CompareTo(b.Config.priceFloor));
+            units.Sort((a,b)=>b.Config.priceFloor.CompareTo(a.Config.priceFloor));
             
             int attempt = 0;
 
@@ -272,6 +272,17 @@ namespace GameKit.YandexAds
 
                 await Task.Delay(delayBetweenRequest * 1000);
             }
+        }
+        
+        private RuntimePlatform GetPlatform()
+        {
+#if UNITY_ANDROID
+            return RuntimePlatform.Android;
+#elif UNITY_IOS
+            return RuntimePlatform.IPhonePlayer;
+#else
+            return Application.platform;
+#endif
         }
     }
 }
