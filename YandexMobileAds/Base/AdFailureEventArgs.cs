@@ -12,10 +12,13 @@ using System;
 namespace YandexMobileAds.Base
 {
     /// <summary>
-    /// Event that occurs when ad fails to perform action.
+    /// Represents event, that occurs when ad fails to perform action.
     /// </summary>
     public class AdFailureEventArgs : EventArgs
     {
+        /// <summary>
+        /// Message, describing reason of failure.
+        /// </summary>
         public string Message { get; set; }
     }
 }

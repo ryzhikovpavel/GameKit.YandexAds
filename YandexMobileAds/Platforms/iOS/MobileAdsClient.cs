@@ -43,6 +43,11 @@ namespace YandexMobileAds.Platforms.iOS
         {
             MobileAdsBridge.YMAUnitySetLocationConsent(consent);
         }
+
+        public void SetAgeRestrictedUser(bool ageRestrictedUser)
+        {
+            // TODO(delank): ADLIB-13105 add COPPA for iOS
+        }
     }
 
     #endif

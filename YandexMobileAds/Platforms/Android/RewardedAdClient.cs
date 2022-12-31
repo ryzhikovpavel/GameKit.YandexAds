@@ -133,14 +133,6 @@ namespace YandexMobileAds.Platforms.Android
             }
         }
 
-        public void onImpression()
-        {
-            if (this.OnImpression != null)
-            {
-                this.OnImpression(this, null);
-            }
-        }
-
         public void onRewardedAdFailedToShow(string errorReason)
         {
             if (this.OnRewardedAdFailedToShow != null)

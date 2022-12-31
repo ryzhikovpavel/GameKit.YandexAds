@@ -11,8 +11,14 @@ using System;
 
 namespace YandexMobileAds.Base
 {
+    /// <summary>
+    /// Represents impression-level revenue data.
+    /// </summary>
     public class ImpressionData : EventArgs
     {
+        /// <summary>
+        /// A raw impression-level revenue data, string with json.
+        /// </summary>
         public readonly string rawData;
 
         public ImpressionData(string rawData){

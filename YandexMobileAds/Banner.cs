@@ -14,19 +14,27 @@ using YandexMobileAds.Platforms;
 
 namespace YandexMobileAds
 {
+    /// <summary>
     /// A class for displaying banner ad view.
+    /// </summary>
     public class Banner
     {
         private AdRequestCreator adRequestFactory;
         private IBannerClient client;
 
+        /// <summary>
         /// Notifies that the banner is loaded. At this time, you can add banner if you haven’t done so yet.
+        /// </summary>
         public event EventHandler<EventArgs> OnAdLoaded;
 
+        /// <summary>
         /// Notifies that the banner failed to load.
+        /// </summary>
         public event EventHandler<AdFailureEventArgs> OnAdFailedToLoad;
         
+        /// <summary>
         /// Called when user returned to application after click.
+        /// </summary>
         public event EventHandler<EventArgs> OnReturnedToApplication;
 
         /// <summary>
@@ -35,10 +43,14 @@ namespace YandexMobileAds
         /// </summary>
         public event EventHandler<EventArgs> OnLeftApplication;
 
+        /// <summary>
         /// Notifies that the user has clicked on the banner.
+        /// </summary>
         public event EventHandler<EventArgs> OnAdClicked;
 
+        /// <summary>
         /// Notifies delegate when an impression was tracked.
+        /// </summary>
         public event EventHandler<ImpressionData> OnImpression;
 
         /// <summary>

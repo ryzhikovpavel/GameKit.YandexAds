@@ -223,15 +223,8 @@ namespace YandexMobileAds.Platforms.iOS
                 rewardedAdClient);
             if (client.OnImpression != null)
             {
-                if (rawImpressionData != null)
-                {
-                    ImpressionData impressionData = new ImpressionData(rawImpressionData);
-                    client.OnImpression(client, impressionData);
-                }
-                else
-                {
-                    client.OnImpression(client, null);
-                }
+                ImpressionData impressionData = new ImpressionData(rawImpressionData == null ? "" : rawImpressionData);
+                client.OnImpression(client, impressionData);
             }
         }
 

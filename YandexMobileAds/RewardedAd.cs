@@ -14,41 +14,63 @@ using YandexMobileAds.Platforms;
 
 namespace YandexMobileAds
 {
+    /// <summary>
     /// A class is responsible for loading rewarded video ads.
+    /// </summary>
     public class RewardedAd
     {
         private AdRequestCreator adRequestFactory;
         private IRewardedAdClient client;
         private volatile bool loaded;
 
+        /// <summary>
         /// Notifies that the ad has been loaded successfully.
+        /// </summary>
         public event EventHandler<EventArgs> OnRewardedAdLoaded;
 
+        /// <summary>
         /// Notifies that the ad failed to load.
+        /// </summary>
         public event EventHandler<AdFailureEventArgs> OnRewardedAdFailedToLoad;
 
+        /// <summary>
         /// Called when user returned to application after click.
+        /// </summary>
         public event EventHandler<EventArgs> OnReturnedToApplication;
 
+        /// <summary>
         /// Notifies that the app will run in the background now because the user clicked on the ad and is about to switch to a different app.
+        /// </summary>
         public event EventHandler<EventArgs> OnLeftApplication;
 
+        /// <summary>
         /// Notifies that the user has clicked on the ad.
+        /// </summary>
         public event EventHandler<EventArgs> OnAdClicked;
 
+        /// <summary>
         /// Called after the rewarded ad appears.
+        /// </summary>
         public event EventHandler<EventArgs> OnRewardedAdShown;
 
+        /// <summary>
         /// Called after hiding the rewarded ad.
+        /// </summary>
         public event EventHandler<EventArgs> OnRewardedAdDismissed;
 
+        /// <summary>
         /// Notifies delegate when an impression was tracked.
+        /// </summary>
         public event EventHandler<ImpressionData> OnImpression;
 
+        /// <summary>
         /// Notifies that the ad can’t be displayed.
+        /// </summary>
         public event EventHandler<AdFailureEventArgs> OnRewardedAdFailedToShow;
 
+        /// <summary>
         /// Notifies that the user should be rewarded for viewing an ad (impression counted).
+        /// </summary>
         public event EventHandler<Reward> OnRewarded;
 
         /// <summary>

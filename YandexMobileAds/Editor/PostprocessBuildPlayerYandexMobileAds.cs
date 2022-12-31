@@ -9,7 +9,9 @@
 
 using UnityEditor;
 using UnityEditor.Callbacks;
+#if UNITY_IOS
 using UnityEditor.iOS.Xcode;
+#endif
 using System.IO;
 using System.Collections;
 
@@ -18,6 +20,7 @@ using System.Collections;
 /// See https://bitbucket.org/Unity-Technologies/iosnativecodesamples/src/ae6a0a2c02363d35f954d244a6eec91c0e0bf194/NativeIntegration/Misc/UpdateXcodeProject/
 /// </summary>
 
+#if UNITY_IOS
 public class PostprocessBuildPlayerYandexMobileAds
 {
     private static readonly string[] StrongFrameworks = {
@@ -89,3 +92,4 @@ public class PostprocessBuildPlayerYandexMobileAds
         }
     }
 }
+#endif

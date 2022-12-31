@@ -31,13 +31,23 @@ namespace YandexMobileAds
         }
 
         /// <summary>
-        /// The SDK automatically collects location data if the user allowed the app to track the location. This option is enabled by default.
+        /// The SDK automatically collects location data if the user allowed the app to track the location. This option is disabled by default.
         /// </summary>
         /// <param name="consent">Enables or disables collecting location data.</param>
         public static void SetLocationConsent(bool consent)
         {
             IMobileAdsClient mobileAds = YandexMobileAdsClientFactory.CreateMobileAdsClient();
             mobileAds.SetLocationConsent(consent);
+        }
+
+        /// <summary>
+        /// The SDK automatically collects personal data if the user didn't restrict them. By default restriction is disabled
+        /// </summary>
+        /// <param name="ageRestrictedUser">Restrict or allow collecting personal data.</param>
+        public static void SetAgeRestrictedUser(bool ageRestrictedUser)
+        {
+            IMobileAdsClient mobileAds = YandexMobileAdsClientFactory.CreateMobileAdsClient();
+            mobileAds.SetAgeRestrictedUser(ageRestrictedUser);
         }
     }
 }

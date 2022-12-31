@@ -25,5 +25,10 @@ namespace YandexMobileAds.Common
         {
             Debug.Log(TAG + MethodBase.GetCurrentMethod().Name);
         }
+
+        public void SetAgeRestrictedUser(bool ageRestrictedUser)
+        {
+            Debug.Log(TAG + MethodBase.GetCurrentMethod().Name);
+        }
     }
 }

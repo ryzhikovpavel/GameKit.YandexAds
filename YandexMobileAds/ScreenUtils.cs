@@ -15,6 +15,13 @@ namespace YandexMobileAds
 {
     public static class ScreenUtils
     {
+        /// <summary>
+        /// Converts physical pixels to density independent pixels
+        /// </summary>
+        /// <param name="pixels">Amount of physical pixels</param>
+        /// <returns>
+        /// Amount of density independent pixels, derived from amount of physical pixels
+        /// </returns>
         public static int ConvertPixelsToDp(int pixels)
         {
             IScreenClient client = YandexMobileAdsClientFactory.CreateScreenClient();

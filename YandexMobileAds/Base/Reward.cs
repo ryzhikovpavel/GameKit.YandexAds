@@ -11,9 +11,19 @@ using System;
 
 namespace YandexMobileAds.Base
 {
+    /// <summary>
+    /// Represents reward given to the user.
+    /// </summary>
     public class Reward : EventArgs
     {
+        /// <summary>
+        /// Amount rewarded to the user
+        /// </summary>
         public readonly int amount;
+
+        /// <summary>
+        /// Type of the reward.
+        /// </summary>
         public readonly string type;
 
         public Reward(int amount, string type){

@@ -27,5 +27,12 @@ namespace YandexMobileAds.Common
         /// </summary>
         /// <param name="consent"><c>true</c> if user provided consent to use location for ads loading, otherwise <c>false</c>.</param>
         void SetLocationConsent(bool consent);
+
+        /// <summary>
+        /// Set a value indicating whether user is a child or undefined age.
+        /// If the value is set to true personal data will not be collected.
+        /// </summary>
+        /// <param name="ageRestrictedUser"><c>true</c> if user falls under COPPA restrictions, otherwise <c>false</c>.</param>
+        void SetAgeRestrictedUser(bool ageRestrictedUser);
     }
 }

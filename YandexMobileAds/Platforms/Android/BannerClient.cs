@@ -115,13 +115,5 @@ namespace YandexMobileAds.Platforms.Android
                 this.OnImpression(this, impressionData);
             }
         }
-
-        public void onImpression()
-        {
-            if (this.OnImpression != null)
-            {
-                this.OnImpression(this, null);
-            }
-        }
     }
 }
