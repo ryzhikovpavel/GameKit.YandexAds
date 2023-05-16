@@ -241,12 +241,11 @@ namespace GameKit.YandexAds
             units.Sort((a,b)=>b.Config.priceFloor.CompareTo(a.Config.priceFloor));
             
             int attempt = 0;
-
-            var request = GetRequest();
+            
             //var delay = new WaitForSecondsRealtime(delayBetweenRequest);
 
             var last = units.Last();
-            last.Load(request);
+            last.Load(GetRequest());
 
             while (Application.isPlaying)
             {
@@ -262,7 +261,7 @@ namespace GameKit.YandexAds
                     
                     if (u.State == AdUnitState.Empty && attempt > u.Attempt && u.PauseUntilTime < DateTime.Now)
                     {
-                        u.Load(request);
+                        u.Load(GetRequest());
                         u.Attempt = attempt;
                         break;
                     }
