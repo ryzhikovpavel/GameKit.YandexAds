@@ -8,45 +8,60 @@ namespace GameKit.YandexAds
     [Serializable]
     internal class InterstitialUnit : YandexUnit<Interstitial>, IInterstitialAdUnit
     {
+        private InterstitialAdLoader interstitialAdLoader = new InterstitialAdLoader();
+        private readonly AdRequestConfiguration _request;
+
         protected override void Initialize()
         {
-            Instance.OnInterstitialDismissed += OnAdClosed;
-            Instance.OnInterstitialLoaded += OnAdLoaded;
-            Instance.OnInterstitialFailedToLoad += OnAdFailedToLoad;
-            Instance.OnInterstitialFailedToShow += OnAdFailedToShow;
-            Instance.OnInterstitialShown += OnAdDisplayed;
+            Instance.OnAdDismissed += OnAdClosed;
+            Instance.OnAdFailedToShow += OnAdFailedToShow;
+            Instance.OnAdShown += OnAdDisplayed;
             Instance.OnAdClicked += OnAdClicked;
         }
-        
+
         public override void Release()
         {
             base.Release();
             if (Instance == null) return;
-            Instance.OnInterstitialDismissed -= OnAdClosed;
-            Instance.OnInterstitialLoaded -= OnAdLoaded;
-            Instance.OnInterstitialFailedToLoad -= OnAdFailedToLoad;
-            Instance.OnInterstitialFailedToShow -= OnAdFailedToShow;
-            Instance.OnInterstitialShown -= OnAdDisplayed;
+            Instance.OnAdDismissed += OnAdClosed;
+            Instance.OnAdFailedToShow -= OnAdFailedToShow;
+            Instance.OnAdShown -= OnAdDisplayed;
+            Instance.OnAdClicked -= OnAdClicked;
             Instance.OnAdClicked -= OnAdClicked;
             Instance.Destroy();
             Instance = null;
         }
 
-        public override bool Load(AdRequest request)
+        public override bool Load()
         {
-            Instance = new Interstitial(Key);
             if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is loading");
             State = AdUnitState.Loading;
-            Instance.LoadAd(request);
+            interstitialAdLoader.LoadAd(_request);
             return true;
         }
-        
+
         public override void Show()
         {
             if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is showing");
             Instance.Show();
         }
 
-        public InterstitialUnit(AdUnitConfig config) : base(config) { }
+        public InterstitialUnit(AdUnitConfig config) : base(config)
+        {
+            interstitialAdLoader.OnAdLoaded += OnInterstitialLoaded;
+            interstitialAdLoader.OnAdFailedToLoad += OnInterstitialFailedToLoad;
+            _request = new AdRequestConfiguration.Builder(config.unitKey).Build();
+        }
+
+        private void OnInterstitialLoaded(object sender, InterstitialAdLoadedEventArgs e)
+        {
+            Instance = e.Interstitial;
+            OnAdLoaded(sender, e);
+        }
+
+        private void OnInterstitialFailedToLoad(object sender, AdFailedToLoadEventArgs e)
+        {
+            OnAdFailedToLoad(sender, new AdFailureEventArgs(){Message = e.Message});
+        }
     }
 }

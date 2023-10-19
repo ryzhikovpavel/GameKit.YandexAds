@@ -9,6 +9,9 @@ namespace GameKit.YandexAds
     [Serializable]
     internal class RewardedUnit : YandexUnit<RewardedAd>, IRewardedVideoAdUnit
     {
+        private readonly RewardedAdLoader _loader = new RewardedAdLoader();
+        private readonly AdRequestConfiguration _request;
+
         public override void Show()
         {
             if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is showing");
@@ -17,12 +20,10 @@ namespace GameKit.YandexAds
 
         protected override void Initialize()
         {
-            Instance.OnRewardedAdDismissed += OnAdClosed;
-            Instance.OnRewardedAdLoaded += OnAdLoaded;
-            Instance.OnRewardedAdFailedToLoad += OnAdFailedToLoad;
-            Instance.OnRewardedAdFailedToShow += OnAdFailedToShow;
+            Instance.OnAdDismissed += OnAdClosed;
+            Instance.OnAdFailedToShow += OnAdFailedToShow;
             Instance.OnRewarded += OnEarnedReward;
-            Instance.OnRewardedAdShown += OnAdDisplayed;
+            Instance.OnAdShown += OnAdDisplayed;
         }
 
         private void OnEarnedReward(object sender, Reward e)
@@ -36,26 +37,42 @@ namespace GameKit.YandexAds
         {
             base.Release();
             if (Instance == null) return;
-            Instance.OnRewardedAdDismissed -= OnAdClosed;
-            Instance.OnRewardedAdLoaded -= OnAdLoaded;
-            Instance.OnRewardedAdFailedToLoad -= OnAdFailedToLoad;
-            Instance.OnRewardedAdFailedToShow -= OnAdFailedToShow;
+            Instance.OnAdDismissed -= OnAdClosed;
+            Instance.OnAdFailedToShow -= OnAdFailedToShow;
             Instance.OnRewarded -= OnEarnedReward;
-            Instance.OnRewardedAdShown -= OnAdDisplayed;
+            Instance.OnAdShown -= OnAdDisplayed;
             Instance = null;
         }
 
-        public override bool Load(AdRequest request)
+        public override bool Load()
         {
-            Instance = new RewardedAd(Key);
             if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is loading");
             State = AdUnitState.Loading;
-            Instance.LoadAd(request);
+            _loader.LoadAd(_request);
             return true;
         }
 
-        public RewardedUnit(AdUnitConfig config) : base(config) { }
         public bool IsEarned { get; private set; }
         public IRewardAdInfo Reward { get; set; }
+
+        public RewardedUnit(AdUnitConfig config) : base(config)
+        {
+            _request = new AdRequestConfiguration.Builder(config.unitKey).Build();
+            _loader.OnAdLoaded += OnRewardedLoaded;
+            _loader.OnAdFailedToLoad += OnRewardedFailedToLoad;
+        }
+
+        private void OnRewardedFailedToLoad(object sender, AdFailedToLoadEventArgs e)
+        {
+            if (e.AdUnitId != Config.unitKey) return;
+            OnAdFailedToLoad(sender, new AdFailureEventArgs(){Message = e.Message});
+        }
+
+        private void OnRewardedLoaded(object sender, RewardedAdLoadedEventArgs e)
+        {
+            if (e.RewardedAd?.GetInfo()?.AdUnitId != Config.unitKey) return;
+            Instance = e.RewardedAd;
+            OnAdLoaded(sender, e);
+        }
     }
 }

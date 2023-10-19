@@ -53,6 +53,10 @@ namespace GameKit.YandexAds
         private bool enableBannersBottomPosition = true;
         [SerializeField] 
         private bool useOnlyWithRussianLanguage;
+        [SerializeField] [Tooltip("Sets COPPA restriction for user age under 13")]
+        private bool tagForUnderAgeOfConsent;
+        [SerializeField] 
+        private bool locationConsent;
 
         [Header("Platforms")]
         [SerializeField]
@@ -75,7 +79,6 @@ namespace GameKit.YandexAds
                     {
                         case SystemLanguage.Belarusian:
                         case SystemLanguage.Russian:
-                        case SystemLanguage.Ukrainian:
                             break;
                         default:
                             return;
@@ -89,7 +92,8 @@ namespace GameKit.YandexAds
         public TaskRoutine Initialize(bool trackingConsent, bool intrusiveAdUnits)
         {
             PauseDelay = pauseAfterFailedRequest;
-            MobileAds.SetLocationConsent(false);
+            MobileAds.SetAgeRestrictedUser(tagForUnderAgeOfConsent);
+            MobileAds.SetLocationConsent(locationConsent);
             MobileAds.SetUserConsent(trackingConsent);
 
             PlatformConfig units;
@@ -230,11 +234,6 @@ namespace GameKit.YandexAds
         public bool IsSupported(Type type) => _units.ContainsKey(type);
         public IAdUnit[] GetUnits(Type type) => _units[type];
         
-        private AdRequest GetRequest()
-        {
-            return new AdRequest.Builder().Build();
-        }
-        
         private async void DownloadHandler(List<YandexUnit> units)
         {
             if (Logger.IsDebugAllowed) Logger.Debug("Start download handler");
@@ -245,7 +244,7 @@ namespace GameKit.YandexAds
             //var delay = new WaitForSecondsRealtime(delayBetweenRequest);
 
             var last = units.Last();
-            last.Load(GetRequest());
+            last.Load();
 
             while (Application.isPlaying)
             {
@@ -261,7 +260,7 @@ namespace GameKit.YandexAds
                     
                     if (u.State == AdUnitState.Empty && attempt > u.Attempt && u.PauseUntilTime < DateTime.Now)
                     {
-                        u.Load(GetRequest());
+                        u.Load();
                         u.Attempt = attempt;
                         break;
                     }

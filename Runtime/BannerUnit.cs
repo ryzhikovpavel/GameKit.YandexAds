@@ -10,14 +10,16 @@ namespace GameKit.YandexAds
     internal class BannerUnit : YandexUnit<Banner>, ITopSmartBannerAdUnit, IBottomSmartBannerAdUnit
     {
         private readonly AdPosition _position;
-        private readonly AdSize _size;
+        private readonly BannerAdSize _size;
+        private readonly AdRequest _request;
 
         public event Action EventClicked;
 
         public BannerUnit(AdUnitConfig config, AdPosition position) : base(config)
         {
             _position = position;
-            _size = AdSize.FlexibleSize(GetScreenWidthDp(), 50);
+            _size = BannerAdSize.StickySize(GetScreenWidthDp());
+            _request = new AdRequest.Builder().Build();
         }
 
         protected override void Initialize()
@@ -47,12 +49,12 @@ namespace GameKit.YandexAds
             Instance = null;
         }
 
-        public override bool Load(AdRequest request)
+        public override bool Load()
         {
             if (Logger.IsDebugAllowed) Logger.Debug($"{Name} is loading");
             Instance = new Banner(Key, _size, _position);
             State = AdUnitState.Loading;
-            Instance.LoadAd(request);
+            Instance.LoadAd(_request);
             Instance.Hide();
             return true;
         }

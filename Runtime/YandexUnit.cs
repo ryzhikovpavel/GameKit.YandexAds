@@ -14,7 +14,7 @@ namespace GameKit.YandexAds
         public string Name => Config.name;
         public string Key => Config.unitKey;
         public int Attempt { get; set; }
-        public abstract bool Load(AdRequest request);
+        public abstract bool Load();
         public DateTime PauseUntilTime;
         public DateTime BestBeforeDate;
         

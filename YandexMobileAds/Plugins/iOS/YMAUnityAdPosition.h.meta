@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 49860920d139e2cdbaf5a98ca92ecd34
+guid: f8edf9375959cc036b911fef309c649b
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -9,6 +9,7 @@ PluginImporter:
   isPreloaded: 0
   isOverridable: 0
   isExplicitlyReferenced: 0
+  validateReferences: 1
   platformData:
   - first:
       Any: 
